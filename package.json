@@ -1,0 +1,14 @@
+{
+  "name": "folden-coffe-root",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "seed": "npm run seed --prefix backend",
+    "db:push": "npx prisma db push --schema=backend/prisma/schema.prisma",
+    "db:seed": "npx prisma db seed --schema=backend/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
