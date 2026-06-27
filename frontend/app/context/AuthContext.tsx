@@ -20,7 +20,10 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+// Di Vercel pake backend yang udah di-deploy, di localhost pake localhost:5000
+const BACKEND = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://backend-six-sooty-55.vercel.app'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000');
 
 function parseJwt(token: string): any {
   try {

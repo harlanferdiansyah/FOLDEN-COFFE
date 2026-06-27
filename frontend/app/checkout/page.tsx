@@ -10,7 +10,9 @@ import { useCart } from '@/app/context/CartContext';
 import { useAuth } from '@/app/context/AuthContext';
 import { formatRupiah } from '@/app/utils/formatPrice';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+const BACKEND = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://backend-six-sooty-55.vercel.app'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000');
 
 interface FormData {
   name: string;

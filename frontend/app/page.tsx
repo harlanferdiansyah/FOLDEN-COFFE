@@ -8,7 +8,9 @@ import ProductCard, { Product } from '@/app/components/ProductCard';
 import { useEffect, useState } from 'react';
 import { formatRupiah } from '@/app/utils/formatPrice';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+const BACKEND = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://backend-six-sooty-55.vercel.app'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000');
 
 const testimonials = [
   { name: 'Rina Andita', text: 'Kopinya luar biasa! Espresso paling nikmat yang pernah aku coba. Wajib datang lagi!', rating: 5, avatar: '👩' },

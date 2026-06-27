@@ -5,7 +5,9 @@ import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import ProductCard, { Product } from '@/app/components/ProductCard';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+const BACKEND = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://backend-six-sooty-55.vercel.app'
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000');
 
 const SAMPLE_PRODUCTS: Product[] = [
   { id: 1, name: 'Espresso Classic', price: 25000, imageUrl: '/coffee-espresso.jpg', category: 'Espresso', description: 'Shot espresso pekat dengan crema sempurna. Bold, powerful, dan membangunkan hari Anda.', inStock: true },
