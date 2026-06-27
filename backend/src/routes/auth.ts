@@ -20,14 +20,12 @@ router.post('/register', async (req: Request, res: Response) => {
   const user = await prisma.user.create({
     data: { email, password: hashed, name },
   });
-  
   const isAdmin = email.endsWith('@admin.com') || email === 'harlan@gmail.com';
   const token = jwt.sign(
     { userId: user.id, email: user.email, name: user.name, isAdmin },
     process.env.JWT_SECRET || 'supersecretkey',
     { expiresIn: '7d' }
   );
-
   res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
 });
 
@@ -38,18 +36,17 @@ router.post('/login', async (req: Request, res: Response) => {
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
+  // Verify password using bcrypt
+  const passwordValid = await bcrypt.compare(password, user.password);
+  if (!passwordValid) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
-
   const isAdmin = user.email.endsWith('@admin.com') || user.email === 'harlan@gmail.com';
   const token = jwt.sign(
     { userId: user.id, email: user.email, name: user.name, isAdmin },
     process.env.JWT_SECRET || 'supersecretkey',
     { expiresIn: '7d' }
   );
-
   res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
 });
 

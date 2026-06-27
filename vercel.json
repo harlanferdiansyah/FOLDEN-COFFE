@@ -5,7 +5,5 @@
       "use": "@vercel/next"
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/frontend/$1" }
-  ]
+  "ignoreCommand": "bash -c 'if [ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ]; then false; else true; fi'"
 }

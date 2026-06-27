@@ -28,6 +28,16 @@ model Product {
   orderItems  OrderItem[]
 }
 
+// PaymentMethod enum
+enum PaymentMethod {
+  GOPAY
+  DANA
+  SHOPEEPAY
+  QRIS
+  ATM
+  BANK_TRANSFER
+}
+
 model Order {
   id          Int        @id @default(autoincrement())
   user        User       @relation(fields: [userId], references: [id])
@@ -38,7 +48,11 @@ model Order {
   updatedAt   DateTime   @updatedAt
   items       OrderItem[]
   paymentId   String?    // Midtrans transaction id
+  paymentUrl  String?    // URL returned by Midtrans (optional)
+  paymentMethod PaymentMethod? // New field for selected method
+  // ... other fields
 }
+
 
 model OrderItem {
   id        Int     @id @default(autoincrement())

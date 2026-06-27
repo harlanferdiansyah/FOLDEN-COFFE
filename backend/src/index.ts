@@ -11,12 +11,17 @@ import adminRouter from './routes/admin';
 
 dotenv.config();
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+// ── Prisma singleton (prevents too many connections on serverless) ──
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-// Prisma client instance
-export const prisma = new PrismaClient();
+const app = express();
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  credentials: true,
+}));
+app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter);
@@ -25,7 +30,13 @@ app.use('/api/payment', paymentRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/admin', adminRouter);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// Export for Vercel serverless
+export default app;
+
+// Local development only
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+}

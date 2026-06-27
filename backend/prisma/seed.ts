@@ -48,20 +48,20 @@ const initialProducts = [
 
 async function main() {
   console.log('🌱 Seeding database...');
-  
+
   // Clean existing data
   await prisma.orderItem.deleteMany({});
   await prisma.order.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.product.deleteMany({});
-  
+
   // Seed specific admin user requested by user
-  const hashedPassword = await bcrypt.hash('laann', 10);
+  const laaann = await bcrypt.hash('admin123', 10);
   const user = await prisma.user.create({
     data: {
       email: 'harlan@gmail.com',
-      password: hashedPassword,
-      name: 'Harlan',
+      password: laaann,
+      name: 'Admin',
     },
   });
   console.log(`Created user: ${user.email}`);
@@ -73,7 +73,7 @@ async function main() {
     });
     console.log(`Created product: ${created.name}`);
   }
-  
+
   console.log('✅ Seeding completed successfully!');
 }
 
